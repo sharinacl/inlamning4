@@ -1,0 +1,29 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"  
+            "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+	<!-- add your bean definitions here! -->
+
+	<!-- Dao beans -->
+
+	<!-- Data sourcez -->
+
+	<!-- Services -->
+	<bean id="diaryManagementService"
+		  class="se.yrgo.services.diary.DiaryManagementServiceMockImpl" />
+
+	<!-- Customer Service (depends on DiaryService) -->
+	<bean id="customerManagementService"
+		  class="se.yrgo.services.customers.CustomerManagementMockImpl">
+	</bean>
+
+	<!-- Call Handling Service (main coordinator) -->
+	<bean id="callHandlingService"
+		  class="se.yrgo.services.calls.CallHandlingServiceImpl">
+		<constructor-arg ref="customerManagementService" />
+		<constructor-arg ref="diaryManagementService" />
+	</bean>
+
+
+
+</beans>
