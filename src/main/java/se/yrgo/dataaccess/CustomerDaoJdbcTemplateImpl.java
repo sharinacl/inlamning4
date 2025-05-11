@@ -55,13 +55,19 @@ public class CustomerDaoJdbcTemplateImpl implements CustomerDao {
 
     @Override
     public void create(Customer customer) {
-        jdbcTemplate.update(INSERT_SQL,
-                customer.getCustomerId(),
-                customer.getCompanyName(),
-                customer.getEmail(),
-                customer.getTelephone(),
-                customer.getNotes()
-        );
+        try {
+            getById(customer.getCustomerId());
+            System.out.println("Customer " + customer.getCustomerId() + " already exist");
+
+        } catch (RecordNotFoundException e) {
+            jdbcTemplate.update(INSERT_SQL,
+                    customer.getCustomerId(),
+                    customer.getCompanyName(),
+                    customer.getEmail(),
+                    customer.getTelephone(),
+                    customer.getNotes()
+            );
+        }
     }
 
     @Override
@@ -80,15 +86,7 @@ public class CustomerDaoJdbcTemplateImpl implements CustomerDao {
 
     @Override
     public void update(Customer customerToUpdate) throws RecordNotFoundException {
-        int rows = jdbcTemplate.update(UPDATE_SQL,
-                customerToUpdate.getCompanyName(),
-                customerToUpdate.getEmail(),
-                customerToUpdate.getTelephone(),
-                customerToUpdate.getNotes(),
-                customerToUpdate.getCustomerId());
-        if (rows == 0) {
-            throw new RecordNotFoundException();
-        }
+        this.jdbcTemplate.update(UPDATE_SQL, customerToUpdate.getCustomerId());
     }
 
     @Override
