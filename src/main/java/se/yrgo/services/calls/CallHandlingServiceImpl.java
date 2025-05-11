@@ -4,6 +4,7 @@ import se.yrgo.domain.Action;
 import se.yrgo.domain.Call;
 import se.yrgo.services.customers.CustomerManagementMockImpl;
 import se.yrgo.services.customers.CustomerManagementService;
+import se.yrgo.services.customers.CustomerManagementServiceProductionImpl;
 import se.yrgo.services.customers.CustomerNotFoundException;
 import se.yrgo.services.diary.DiaryManagementService;
 import se.yrgo.services.diary.DiaryManagementServiceMockImpl;
@@ -16,6 +17,11 @@ public class CallHandlingServiceImpl implements CallHandlingService {
 
     public CallHandlingServiceImpl(CustomerManagementMockImpl customerManagementMock, DiaryManagementServiceMockImpl diaryManagementServiceMock) {
         this.customerService = customerManagementMock;
+        this.diaryService = diaryManagementServiceMock;
+    }
+
+    public CallHandlingServiceImpl(CustomerManagementServiceProductionImpl customerManagementServiceProduction, DiaryManagementServiceMockImpl diaryManagementServiceMock) {
+        this.customerService = customerManagementServiceProduction;
         this.diaryService = diaryManagementServiceMock;
     }
 
