@@ -1,6 +1,7 @@
 package se.yrgo.dataaccess;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import se.yrgo.domain.Call;
@@ -73,8 +74,12 @@ public class CustomerDaoJdbcTemplateImpl implements CustomerDao {
     @Override
     public Customer getById(String customerId) throws RecordNotFoundException {
         try {
-            return jdbcTemplate.queryForObject(GET_BY_ID_SQL, new CustomerRowMapper(), customerId);
-        } catch (org.springframework.dao.EmptyResultDataAccessException e) {
+            return jdbcTemplate.queryForObject(
+                    GET_BY_ID_SQL,
+                    new CustomerRowMapper(),
+                    customerId
+            );
+        } catch (EmptyResultDataAccessException e) {
             throw new RecordNotFoundException();
         }
     }
@@ -104,7 +109,7 @@ public class CustomerDaoJdbcTemplateImpl implements CustomerDao {
 
     @Override
     public Customer getFullCustomerDetail(String customerId) throws RecordNotFoundException {
-        Customer customer = getById(customerId); // This already throws RecordNotFoundException
+        Customer customer = getById(customerId);
         List<Call> calls = jdbcTemplate.query(
                 GET_CALLS_SQL,
                 new CallRowMapper(),
